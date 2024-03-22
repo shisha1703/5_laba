@@ -1,25 +1,51 @@
-class FileOpener:
+
+class fileexec1:
+    def run(self):
+        print("Code executed from file1.py")
+
+
+# file2.py
+class fileexec2:
+    def run(self):
+        print("Code executed from file2.py")
+
+
+# file3.py
+class fileexec3:
+    def run(self):
+        print("Code executed from file3.py")
+
+
+# file4.py
+class fileexec4:
+    def run(self):
+        print("Code executed from file4.py")
+
+
+# main.py
+import importlib
+
+
+class Main:
     def __init__(self):
-        self.file_mapping = {
-            '1': 'file1.txt',
-            '2': 'file2.txt',
-            '3': 'file3.txt',
-            '4': 'file4.txt'
-        }
+        self.file_num = int(input("Введите номер файла (1-4): "))
 
-    def open_file(self, input_number):
-        file_name = self.file_mapping.get(input_number)
-        if file_name:
-                with open(file_name, 'r') as file:
-                    content = file.read()
-                    print(f'Содержимое файла {file_name}: {content}')
+    def run_file(self):
+        if self.file_num < 1 or self.file_num > 4:
+            print("Файл не найден, введите число заного от 1 до 4")
+            return
+
+        module_name = f"file{self.file_num}"
+        class_name = f"File{self.file_num}"
+
+        try:
+            module = importlib.import_module(module_name)
+            selected_class = getattr(module, class_name)()
+            selected_class.run()
+        except ModuleNotFoundError:
+            print("Файл не найден.")
 
 
-if __name__ == '__main__':
-    file_opener = FileOpener()
-
-    user_input = input('Введите число для открытия содержимого файла (1-4): ')
-    if user_input in ['1', '2', '3', '4']:
-        file_opener.open_file(user_input)
-    else:
-        print('Введите число заново от 1-4.')
+if __name__ == "__main__":
+    main = Main()
+    main.run_file()
